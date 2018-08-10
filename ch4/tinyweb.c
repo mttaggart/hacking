@@ -10,7 +10,7 @@
 #include "hacking-network.h"
 
 #define PORT 80
-#define WEBROOT "./webroot"
+#define WEBROOT "/home/mttaggart/Learning/Hacking/ch4/webroot"
 
 void handle_connection(int, struct sockaddr_in *);
 int get_file_size(int);
@@ -65,23 +65,27 @@ void handle_connection(int sockfd, struct sockaddr_in *client_addr_ptr) {
 
     ptr = strstr(request, " HTTP/");
     if(ptr == NULL) {
-        prtinf(" NOT HTTP!\n");
+        printf(" NOT HTTP!\n");
     } else {
         *ptr = 0;
         ptr = NULL;
         if(strncmp(request, "GET ", 4) == 0) {
+            ptr = request + 4;
+        }
+
+        if(strncmp(request, "HEAD ", 5) == 0) {
             ptr = request + 5;
         }
 
         if(ptr == NULL) {
             printf("\tUNKNOWN REQUEST!\n");
         } else {
-            if(ptr[strlen(ptr) - 1] == "/") {
+            if(ptr[strlen(ptr) - 1] == '/') {
                 strcat(ptr, "index.html");
             }
             strcpy(resource, WEBROOT);
             strcat(resource, ptr);
-            fd = open(resource, O_RDONLY, O);
+            fd = open(resource, O_RDONLY, 0);
             printf("\tOpening \'%s\'\t", resource);
             if(fd == -1) {
                 printf(" 404 Not Found\n");
