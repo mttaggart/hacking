@@ -124,25 +124,3 @@ int get_file_size(int fd) {
     return (int) stat_struct.st_size;
 }
 
-
- 
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
